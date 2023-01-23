@@ -1,0 +1,67 @@
+create database floricultura_2a1_aula01; -- comando para criar um banco de dados
+use floricultura_2b1_aula01; -- comando para usar um banco especifico
+create table produto( -- comandomando para criar uma tabela com chave primaria
+	cod_produto int not null primary key auto_increment,
+    nome varchar(80) not null,
+    tipo varchar(80) not null,
+    preco decimal(9,2) not null,
+    qtd_estoque int not null
+);
+-- criar tabela com chave estrangeira
+create table item_pedido(
+	cod_itempedido int not null primary key auto_increment,
+    quantidade int not null,
+    valor_total decimal(9,2) not null,
+    cod_produto_fk int not null,
+    foreign key (cod_produto_fk) references produto(cod_produto)
+);
+
+-- criar tabela pedido
+create table pedido(
+	cod_pedido int not null primary key auto_increment,
+    dt_compra date not null,
+    total_pedido decimal(9,2) not null,
+    rg_fk char(13) not null,
+	foreign key (rg_fk) references cliente(rg),
+    cod_itempedido_fk int not null,
+    foreign key (cod_itempedido_fk) references item_pedido(cod_itempedido)
+   
+);
+
+/*
+CRUD: se refere as aos registros/dados contidos nos bancos de dados
+
+CREATE: criação de registros/dados em uma tabela
+READ:   ler as informações das tabelas de um banco
+UPDATE: atualiza os dados das tabelas do banco
+DELETE: deletar os registros das tabelas do banco
+*/
+
+-- comando para ler todas as informações de uma tabela (READ)
+select * from cliente;
+
+-- comando para mostrar as especificações de uma tabela
+describe cliente;
+
+-- comando para inserir dados dentro de uma tabela (CREATE)
+insert into cliente(rg,nome,telefone,endereco_comp) values
+('mg.19.999.999','Ronodelson Periclez','(32)99999-9999','Rua das Catingas,450,Belo Horizonte'),
+('mg.29.999.999','Florentina Periclez','(32)99999-9999','Rua das Catingas,450,Belo Horizonte'),
+('mg.39.999.999','Ronaldo Periclez','(32)99999-9999','Rua das Catingas,450,Belo Horizonte'),
+('mg.49.999.999','Felizberta Periclez','(32)99999-9999','Rua das Catingas,450,Belo Horizonte');
+
+-- inserir os dados em uma tabela que contenha chave primaria com auto_increment
+select * from produto;
+describe produto;
+insert into produto(nome,tipo,preco,qtd_estoque) values
+('orquidea','flor',35.25,60),
+('rosa','flor',22.30,70),
+('Marijuana','planta',78.93,70),
+('Calendula','flor',12.00,20);
+
+--
+select * from item_pedido;
+insert into item_pedido(quantidade,valor_total,cod_produto_fk) values
+(3,105.75,1),
+(40,3157.20,3),
+(1,22.30,2);
